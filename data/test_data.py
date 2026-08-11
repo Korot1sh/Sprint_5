@@ -6,8 +6,8 @@ from helpers.generators import generate_email, generate_password, generate_ad_ti
 class TestData:
     # Тестовые пользователи
     EXISTING_USER = {
-        "email": "davyd-vihara@gmail.com",
-        "password": "Password123"
+        "email": "prokhorov_36@gmail.com",
+        "password": "123456"
     }
 
     # Статические данные для объявлений

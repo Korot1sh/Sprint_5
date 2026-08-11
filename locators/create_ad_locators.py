@@ -21,4 +21,4 @@ class CreateAdLocators:
     CATEGORY_DROPDOWN = (By.XPATH, "//button[contains(@class,'category-dropdown')]")
     CATEGORY_OPTION_BOOKS = (By.XPATH, "//span[text()='Книги']")
     CITY_DROPDOWN = (By.XPATH, "//button[contains(@class,'city-dropdown')]")
-    CITY_OPTION_KAZAN = (By.XPATH, "//span[text()='Казань']")
+    CITY_OPTION_SPb = (By.XPATH, "//span[text()='Санкт-Петербург']")
