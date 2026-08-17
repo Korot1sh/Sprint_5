@@ -1,9 +1,6 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.main_page import MainPage
 from pages.auth_page import AuthPage
 from data.test_data import TestData
-from locators.main_page_locators import MainPageLocators
 from config import Config
 
 
@@ -14,7 +11,7 @@ class TestLogout:
         auth_page = AuthPage(driver)
 
         # Сначала логинимся
-        driver.get(Config.BASE_URL)
+        main_page.open(Config.BASE_URL)
         main_page.open_login_form()
         auth_page.login(
             TestData.EXISTING_USER["email"],
@@ -22,19 +19,14 @@ class TestLogout:
         )
 
         # Проверяем что залогинены
-        WebDriverWait(driver, Config.TIMEOUT).until(
-            EC.presence_of_element_located(MainPageLocators.LOGOUT_BUTTON)
-        )
+        main_page.wait_until_logged_in()
 
         # Затем разлогиниваемся
         main_page.logout()
 
         # Проверяем что вышли (появилась кнопка входа)
-        WebDriverWait(driver, Config.TIMEOUT).until(
-            EC.presence_of_element_located(MainPageLocators.LOGIN_REGISTER_BUTTON)
-        )
+        main_page.wait_until_logged_out()
 
-        assert driver.find_element(*MainPageLocators.LOGIN_REGISTER_BUTTON).is_displayed()
+        assert main_page.is_login_register_button_displayed()
         # Проверяем что кнопка выхода исчезла
-        logout_buttons = driver.find_elements(*MainPageLocators.LOGOUT_BUTTON)
-        assert len(logout_buttons) == 0
+        assert main_page.is_logout_button_absent()

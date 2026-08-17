@@ -1,5 +1,3 @@
-from selenium.webdriver.chrome.webdriver import WebDriver
-
 from pages.main_page import MainPage
 from pages.auth_page import AuthPage
 from pages.create_ad_page import CreateAdPage
@@ -9,7 +7,7 @@ from locators.create_ad_locators import CreateAdLocators
 
 class TestCreateAd:
 
-    def test_create_ad_unauthorized(self, driver: WebDriver):
+    def test_create_ad_unauthorized(self, driver):
         # Создание объявления неавторизованным пользователем
         main_page = MainPage(driver)
         create_ad_page = CreateAdPage(driver)
@@ -20,7 +18,7 @@ class TestCreateAd:
         # Проверяем что появилось модальное окно авторизации
         assert create_ad_page.is_auth_modal_visible()
 
-    def test_create_ad_authorized(self, driver: WebDriver):
+    def test_create_ad_authorized(self, driver):
         # Создание объявления авторизованным пользователем
         main_page = MainPage(driver)
         auth_page = AuthPage(driver)
@@ -62,15 +60,9 @@ class TestCreateAd:
         # Публикуем (состояние оставляем по умолчанию - "Новый")
         create_ad_page.click(CreateAdLocators.PUBLISH_BUTTON)
 
-        # Выбор категории и города (если элементы есть на форме)
-        try:
-            create_ad_page.click(CreateAdLocators.CATEGORY_DROPDOWN)
-            create_ad_page.click(CreateAdLocators.CATEGORY_OPTION_BOOKS)
-        except:
-            pass  # Пропускаем если элементы не найдены
+        # Выбор категории и города
+        create_ad_page.click(CreateAdLocators.CATEGORY_DROPDOWN)
+        create_ad_page.click(CreateAdLocators.CATEGORY_OPTION_BOOKS)
 
-        try:
-            create_ad_page.click(CreateAdLocators.CITY_DROPDOWN)
-            create_ad_page.click(CreateAdLocators.CITY_OPTION_SPb)
-        except:
-            pass  # Пропускаем если элементы не найдены
+        create_ad_page.click(CreateAdLocators.CITY_DROPDOWN)
+        create_ad_page.click(CreateAdLocators.CITY_OPTION_SPb)

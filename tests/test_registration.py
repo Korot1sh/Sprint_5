@@ -1,10 +1,6 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.main_page import MainPage
 from pages.auth_page import AuthPage
 from data.test_data import TestData
-from locators.main_page_locators import MainPageLocators
-from locators.auth_page_locators import AuthPageLocators
 from config import Config
 
 
@@ -14,7 +10,7 @@ class TestRegistration:
         main_page = MainPage(driver)
         auth_page = AuthPage(driver)
 
-        driver.get(Config.BASE_URL)
+        main_page.open(Config.BASE_URL)
         main_page.open_login_form()
         auth_page.go_to_registration()
 
@@ -23,38 +19,35 @@ class TestRegistration:
         auth_page.register(user_data["email"], user_data["password"])
 
         # Проверяем успешную регистрацию
-        WebDriverWait(driver, Config.TIMEOUT).until(
-            EC.presence_of_element_located(MainPageLocators.USER_NAME)
-        )
+        main_page.wait_until_logged_in()
 
-        assert driver.find_element(*MainPageLocators.USER_NAME).is_displayed()
-        assert driver.find_element(*MainPageLocators.LOGOUT_BUTTON).is_displayed()
+        assert main_page.is_user_name_displayed()
+        assert main_page.is_logout_button_displayed()
 
     def test_registration_invalid_email(self, driver):
         # Регистрация с email не по маске
         main_page = MainPage(driver)
         auth_page = AuthPage(driver)
 
-        driver.get(Config.BASE_URL)
+        main_page.open(Config.BASE_URL)
         main_page.open_login_form()
         auth_page.go_to_registration()
 
         # Заполняем только email (невалидный)
-        auth_page.input_text(AuthPageLocators.EMAIL_INPUT, "invalid-email")
-        auth_page.click(AuthPageLocators.CREATE_ACCOUNT_BUTTON)
+        auth_page.input_email("invalid-email")
+        auth_page.click_create_account()
 
-        # Проверяем что остались на странице регистрации 
-        WebDriverWait(driver, Config.TIMEOUT).until(
-            EC.presence_of_element_located(AuthPageLocators.CREATE_ACCOUNT_BUTTON)
-        )
-        assert "regiatration" in driver.current_url
+        # Проверяем что остались на странице регистрации
+        auth_page.wait_until_registration_page()
+
+        assert auth_page.is_registration_page()
 
     def test_registration_existing_user(self, driver):
         # Регистрация уже существующего пользователя
         main_page = MainPage(driver)
         auth_page = AuthPage(driver)
 
-        driver.get(Config.BASE_URL)
+        main_page.open(Config.BASE_URL)
         main_page.open_login_form()
         auth_page.go_to_registration()
 
@@ -65,7 +58,6 @@ class TestRegistration:
         )
 
         # Проверяем что остались на странице регистрации
-        WebDriverWait(driver, Config.TIMEOUT).until(
-            EC.presence_of_element_located(AuthPageLocators.CREATE_ACCOUNT_BUTTON)
-        )
-        assert "regiatration" in driver.current_url
+        auth_page.wait_until_registration_page()
+
+        assert auth_page.is_registration_page()
