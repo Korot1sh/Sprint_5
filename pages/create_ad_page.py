@@ -1,21 +1,24 @@
-from pages.base_page import BasePage
 from locators.create_ad_locators import CreateAdLocators
 
 
-class CreateAdPage(BasePage):
+class CreateAdPage:
 
-    def wait_until_form_loaded(self):
-        self.wait_for_element_visible(
-            CreateAdLocators.TITLE_INPUT
+    def fill_ad_data(self, ad_data):
+        self.input_text(
+            CreateAdLocators.TITLE_INPUT,
+            ad_data["title"]
+        )
+        self.input_text(
+            CreateAdLocators.DESCRIPTION_INPUT,
+            ad_data["description"]
+        )
+        self.input_text(
+            CreateAdLocators.PRICE_INPUT,
+            ad_data["price"]
         )
 
-    def is_auth_modal_visible(self):
-        try:
-            return self.wait_for_element_visible(
-                CreateAdLocators.AUTH_MODAL
-            ).is_displayed()
-        except:
-            return False
+    def publish_ad(self):
+        self.click(CreateAdLocators.PUBLISH_BUTTON)
 
     def select_category_books(self):
         self.click(CreateAdLocators.CATEGORY_DROPDOWN)
@@ -24,6 +27,3 @@ class CreateAdPage(BasePage):
     def select_city_spb(self):
         self.click(CreateAdLocators.CITY_DROPDOWN)
         self.click(CreateAdLocators.CITY_OPTION_SPb)
-
-    def publish(self):
-        self.click(CreateAdLocators.PUBLISH_BUTTON)

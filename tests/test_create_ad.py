@@ -2,7 +2,6 @@ from pages.main_page import MainPage
 from pages.auth_page import AuthPage
 from pages.create_ad_page import CreateAdPage
 from data.test_data import TestData
-from locators.create_ad_locators import CreateAdLocators
 
 
 class TestCreateAd:
@@ -44,25 +43,11 @@ class TestCreateAd:
         # Используем генератор для создания уникальных данных объявления
         ad_data = TestData.generate_ad_data()
 
-        create_ad_page.input_text(
-            CreateAdLocators.TITLE_INPUT,
-            ad_data["title"]
-        )
-        create_ad_page.input_text(
-            CreateAdLocators.DESCRIPTION_INPUT,
-            ad_data["description"]
-        )
-        create_ad_page.input_text(
-            CreateAdLocators.PRICE_INPUT,
-            ad_data["price"]
-        )
+        create_ad_page.fill_ad_data(ad_data)
 
         # Публикуем (состояние оставляем по умолчанию - "Новый")
-        create_ad_page.click(CreateAdLocators.PUBLISH_BUTTON)
+        create_ad_page.publish_ad()
 
         # Выбор категории и города
-        create_ad_page.click(CreateAdLocators.CATEGORY_DROPDOWN)
-        create_ad_page.click(CreateAdLocators.CATEGORY_OPTION_BOOKS)
-
-        create_ad_page.click(CreateAdLocators.CITY_DROPDOWN)
-        create_ad_page.click(CreateAdLocators.CITY_OPTION_SPb)
+        create_ad_page.select_category_books()
+        create_ad_page.select_city_spb()
