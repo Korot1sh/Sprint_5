@@ -7,7 +7,7 @@ from data.test_data import TestData
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators.main_page_locators import MainPageLocators
-from helpers.generators import generate_email, generate_password
+from helpers.generators import generate_user_data, generate_ad_data
 
 
 @pytest.fixture
@@ -24,10 +24,7 @@ def driver():
     # Устанавливаем неявные ожидания
     driver.implicitly_wait(Config.IMPLICIT_WAIT)
 
-    yield driver
-
-    # Закрываем браузер после теста
-    driver.quit()
+    return driver
 
 
 @pytest.fixture
@@ -49,27 +46,16 @@ def logged_in_driver(driver):
         EC.presence_of_element_located(MainPageLocators.LOGOUT_BUTTON)
     )
 
-    yield driver
+    return driver
 
 
 @pytest.fixture
 def random_user():
     # Фикстура для генерации случайных данных пользователя
-    return {
-        "email": generate_email(),
-        "password": generate_password()
-    }
+    return generate_user_data()
 
 
 @pytest.fixture
 def random_ad_data():
     # Фикстура для генерации случайных данных объявления
-    from helpers.generators import generate_ad_title, generate_ad_description, generate_price
-    import random
-
-    return {
-        "title": generate_ad_title(),
-        "description": generate_ad_description(),
-        "price": generate_price(),
-        "condition": random.choice(["new", "used"])
-    }
+    return generate_ad_data()

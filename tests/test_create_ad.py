@@ -33,21 +33,27 @@ class TestCreateAd:
 
         # Ждем пока пользователь залогинится
         main_page.wait_until_logged_in()
+        assert main_page.is_user_logged_in()
 
         # Создаем объявление
         main_page.open_create_ad()
 
         # Ждем загрузки формы создания объявления
         create_ad_page.wait_until_form_loaded()
+        assert create_ad_page.is_form_visible()
 
         # Используем генератор для создания уникальных данных объявления
         ad_data = TestData.generate_ad_data()
 
         create_ad_page.fill_ad_data(ad_data)
+        assert create_ad_page.is_ad_data_filled(ad_data)
 
         # Публикуем (состояние оставляем по умолчанию - "Новый")
         create_ad_page.publish_ad()
 
         # Выбор категории и города
         create_ad_page.select_category_books()
+        assert create_ad_page.is_books_category_selected()
+
         create_ad_page.select_city_spb()
+        assert create_ad_page.is_spb_city_selected()
