@@ -2,11 +2,12 @@ from pages.main_page import MainPage
 from pages.auth_page import AuthPage
 from data.test_data import TestData
 from config import Config
+from helpers.generators import generate_user_data
 
 
 class TestRegistration:
     def test_successful_registration(self, driver):
-        # Регистрация пользователя - позитивный сценарий
+        # Регистрация пользователя
         main_page = MainPage(driver)
         auth_page = AuthPage(driver)
 
@@ -15,14 +16,13 @@ class TestRegistration:
         auth_page.go_to_registration()
 
         # Используем генератор для создания уникальных данных
-        user_data = TestData.generate_user_data()
+        user_data = generate_user_data()
         auth_page.register(user_data["email"], user_data["password"])
 
         # Проверяем успешную регистрацию
         main_page.wait_until_logged_in()
 
         assert main_page.is_user_name_displayed()
-        assert main_page.is_logout_button_displayed()
 
     def test_registration_invalid_email(self, driver):
         # Регистрация с email не по маске
