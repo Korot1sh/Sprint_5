@@ -5,7 +5,7 @@ from locators.profile_locators import ProfileLocators
 class ProfilePage(BasePage):
     def get_ads_count(self):
         try:
-            ads = self.driver.find_elements(*ProfileLocators.AD_ITEM)
+            ads = self.find_elements(ProfileLocators.AD_ITEM)
             return len(ads)
         except:
             return 0

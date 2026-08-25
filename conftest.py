@@ -2,7 +2,9 @@ import pytest
 from selenium import webdriver
 
 from config import Config
-from helpers.generators import login_user
+from data.test_data import TestData
+from pages.main_page import MainPage
+from pages.auth_page import AuthPage
 
 
 @pytest.fixture
@@ -25,4 +27,17 @@ def driver():
 @pytest.fixture
 def logged_in_driver(driver):
     # Фикстура для предварительно залогиненного пользователя
-    return login_user(driver)
+    main_page = MainPage(driver)
+    auth_page = AuthPage(driver)
+
+    driver.get(Config.BASE_URL)
+    main_page.open_login_form()
+
+    auth_page.login(
+        TestData.EXISTING_USER["email"],
+        TestData.EXISTING_USER["password"]
+    )
+
+    main_page.wait_until_logged_in()
+
+    return driver

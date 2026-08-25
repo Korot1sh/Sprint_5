@@ -26,6 +26,9 @@ class BasePage:
             EC.visibility_of_element_located(locator)
         )
 
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)
+
     def click(self, locator):
         self.wait_for_element_visible(locator).click()
 

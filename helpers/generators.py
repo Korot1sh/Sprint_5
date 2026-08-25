@@ -1,34 +1,5 @@
 import random
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-from config import Config
-from pages.main_page import MainPage
-from pages.auth_page import AuthPage
-from locators.main_page_locators import MainPageLocators
-
-
-def login_user(driver):
-    from data.test_data import TestData
-
-    main_page = MainPage(driver)
-    auth_page = AuthPage(driver)
-
-    driver.get(Config.BASE_URL)
-    main_page.open_login_form()
-
-    auth_page.login(
-        TestData.EXISTING_USER["email"],
-        TestData.EXISTING_USER["password"]
-    )
-
-    WebDriverWait(driver, Config.TIMEOUT).until(
-        EC.presence_of_element_located(MainPageLocators.LOGOUT_BUTTON)
-    )
-
-    return driver
-
 
 def generate_email():
     # Генерация случайного email

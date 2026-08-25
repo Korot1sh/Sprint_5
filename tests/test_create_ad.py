@@ -1,5 +1,6 @@
 from pages.main_page import MainPage
 from pages.create_ad_page import CreateAdPage
+from pages.profile_page import ProfilePage
 from helpers.generators import generate_ad_data
 
 
@@ -125,3 +126,5 @@ class TestCreateAd:
 
         # Публикуем (состояние оставляем по умолчанию - "Новый")
         create_ad_page.publish_ad()
+
+        assert ProfilePage(logged_in_driver).get_first_ad_title() == ad_data["title"]
